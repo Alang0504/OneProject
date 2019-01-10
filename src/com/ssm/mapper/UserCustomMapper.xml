@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.UserCustomMapper">
+	<sql id="userSql">
+			<if test="username!=null and username!=''">
+				and username=#{username}
+			</if>
+			<if test="password!=null and password!=''">
+				and password=#{password}
+			</if>
+	</sql>
+	
+	<!-- 一对多查询用户订单Map -->
+	<resultMap type="UserCustom" id="findUserofOrderResultMap">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="birthday" column="birthday"/>
+		<result property="sex" column="sex"/>
+		<result property="address" column="address"/>
+		<result property="password" column="password" />
+		<collection property="listOrders" ofType="Orders">
+			<id property="id" column="orders_id" />
+			<result property="number" column="number"/>
+			<result property="createtime" column="createtime"/>
+		</collection>
+	</resultMap>	
+	
+	<!-- 用户登录 -->
+	<select id="findUser" parameterType="UserCustom" resultType="UserCustom">
+		SELECT username,password FROM USER 
+		<where>
+			<include refid="userSql" ></include>
+		</where>
+	</select>
+	
+	<!-- 根据用户名查看个人信息 -->
+	<select id="findUserName" parameterType="String" resultType="UserCustom">
+		select * from USER where username = #{value}
+	</select>
+	
+	<!-- 一对多查看用户拥有的订单 -->
+	<select id="findUserofOrder" parameterType="int" resultMap="findUserofOrderResultMap">
+		SELECT
+ 		 u.*,
+ 		 o.`id` orders_id,
+ 		 o.`number`,
+ 		 o.`createtime`
+		FROM
+ 		 USER u,
+ 		 orders o
+		WHERE u.`id` = o.`user_id` AND u.`id` = #{id}
+	</select>
+	
+	<!-- 修改个人密码 -->
+	<update id="updatePasswordByName" parameterType="UserCustom">
+		update USER set password = #{password} where username = #{username}
+	</update>
+	
+</mapper>

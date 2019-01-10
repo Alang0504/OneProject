@@ -1,0 +1,13 @@
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 配置包别名 -->
+	<typeAliases>
+		<package name="com.ssm.pojo"/>
+	</typeAliases>
+	<!-- 配置maperr映射文件扫描包路径下的接口类 -->
+	<mappers>
+		<package name="com.ssm.mapper"/>
+	</mappers>
+</configuration>

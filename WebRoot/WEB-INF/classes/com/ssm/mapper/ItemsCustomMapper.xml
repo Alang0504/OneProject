@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.ItemsCustomMapper" >
+	<sql id="itemsSql">
+		<if test="itemsCustom!=null">
+			<if test="itemsCustom.queryName!=null and itemsCustom.queryName!=''">
+				and name like '%${itemsCustom.queryName}%'
+			</if>
+			<if test="itemsCustom.queryMin!=null and itemsCustom.queryMin!=''">
+			<!-- &gt;转义字符大于号 ，&lt;转义字符小于号，可以在后边加=表示大于等于或小于等于-->
+				and price &gt; #{itemsCustom.queryMin} 
+			</if>
+			<if test="itemsCustom.queryMax!=null and itemsCustom.queryMax!=''">
+				and price &lt; #{itemsCustom.queryMax}
+			</if>
+		</if>
+	</sql>
+	<!-- 根据条件查询商品信息 -->
+	<select id="findItemsList" parameterType="ItemsVo" resultType="ItemsCustom">
+		SELECT * FROM items 
+		<where>
+			<include refid="itemsSql"></include>
+		</where>
+	</select>
+	<!-- 根据条件查询商品总数 -->
+	<select id="findItemsCount" parameterType="ItemsVo" resultType="int">
+		SELECT count(*) FROM items
+		<where>
+			<include refid="itemsSql"></include>
+		</where>
+	</select>
+</mapper>

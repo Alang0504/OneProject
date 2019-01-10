@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="SsmFrame"
+  id="myeclipse.1541332523533"
+  context-root="/SsmFrame"
+  j2ee-spec="5.0"
+  archive="SsmFrame.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
